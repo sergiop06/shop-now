@@ -1,0 +1,103 @@
+# -----------------------------------------------------------------------------
+# Global Ignores (OS-specific, common temporary files)
+# -----------------------------------------------------------------------------
+.DS_Store             # macOS system files
+Thumbs.db             # Windows thumbnail cache
+*.log                 # Log files
+*.tmp                 # Temporary files
+*.temp
+.history/             # VS Code local history (if enabled)
+.idea/compiler/       # IntelliJ IDEA compiler caches (if configured at top-level)
+.classpath_vs         # From some VS Code Java extensions
+
+
+# -----------------------------------------------------------------------------
+# Build Artifacts (for both root and nested services)
+# -----------------------------------------------------------------------------
+# Maven build output (at root or in sub-services like order-service/target/)
+/target/
+
+# Gradle build output (at root or in sub-services like user-service/build/)
+/build/
+
+# Gradle wrapper directories and files
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Maven wrapper directories and files
+.mvn/wrapper/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Compiled class files
+*.class
+
+# Packaged application files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# For spring-boot-loader when working with exploded jars
+!**/target/*/spring-boot-loader/
+
+
+# -----------------------------------------------------------------------------
+# IDE-specific files and directories (for the monorepo setup)
+# -----------------------------------------------------------------------------
+
+### IntelliJ IDEA ###
+.idea/                # IntelliJ IDEA project files for the entire monorepo
+*.iws
+*.iml
+*.ipr
+out/                  # IntelliJ's default output directory (if configured at top-level)
+
+### Eclipse / Spring Tool Suite (STS) ###
+.apt_generated/       # Generated classes (e.g., from Lombok or MapStruct annotation processors)
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/              # VS Code project settings for the entire monorepo
+# If you want to commit shared VS Code settings, use:
+# !.vscode/settings.json
+# !.vscode/extensions.json
+# !.vscode/launch.json
+# !.vscode/tasks.json
+
+# -----------------------------------------------------------------------------
+# Dependency Caches / Local Repositories
+# -----------------------------------------------------------------------------
+# Local .m2 repository (should not be committed)
+# ~/.m2/
+
+# -----------------------------------------------------------------------------
+# Configuration / Environment (sensitive or local-only)
+# -----------------------------------------------------------------------------
+# Application-specific log directories (if not under target/)
+/logs/
+/temp/
+# Database files (if using embedded databases like H2 outside target/)
+*.mv.db
+*.trace.db
+
+# Sensitive properties/configuration (e.g., credentials or local overrides)
+# If you have application.properties/yml at the root, ensure you don't ignore them.
+# But if you have local-only configuration files that shouldn't be committed, add them here. For example:
+# application-local.properties
+# *.env
+# .env.local
