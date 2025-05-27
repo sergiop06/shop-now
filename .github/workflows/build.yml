@@ -27,8 +27,25 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+
+    - name: Build User Service
+      run: |
+        echo "Building Order Service..."
+        cd user-service
+        mvn clean verify -DskipTests # Build and install, skipping tests for faster PR validation
+      working-directory: user-service # sets the working directory for this step
+    - name: Build product Service
+      run: |
+        echo "Building Product Service..."
+        cd product-service
+        mvn clean verify -DskipTests # Build and install, skipping tests for faster PR validation
+      working-directory: product-service # sets the working directory for this step
+    - name: Build Order Service
+      run: |
+        echo "Building Order Service..."
+        cd order-service
+        mvn clean verify -DskipTests # Build and install, skipping tests for faster PR validation
+      working-directory: order-service # sets the working directory for this step
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph

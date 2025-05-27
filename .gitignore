@@ -54,6 +54,7 @@ Thumbs.db             # Windows thumbnail cache
 *.iml
 *.ipr
 out/                  # IntelliJ's default output directory (if configured at top-level)
+.idea*
 
 ### Eclipse / Spring Tool Suite (STS) ###
 .apt_generated/       # Generated classes (e.g., from Lombok or MapStruct annotation processors)
