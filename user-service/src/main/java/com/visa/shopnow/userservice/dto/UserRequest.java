@@ -1,7 +1,7 @@
-package com.visa.shopnow.orderservice.dto;
+package com.visa.shopnow.userservice.dto;
 
 
-import com.visa.shopnow.orderservice.validation.OnCreate;
+import com.visa.shopnow.userservice.validation.OnCreate;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

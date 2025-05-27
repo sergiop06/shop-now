@@ -1,9 +1,9 @@
- package com.visa.shopnow.orderservice.controller;
+ package com.visa.shopnow.userservice.controller;
 
- import com.visa.shopnow.orderservice.dto.UserApiResponse;
- import com.visa.shopnow.orderservice.dto.UserRequest;
- import com.visa.shopnow.orderservice.dto.UserResponse;
- import com.visa.shopnow.orderservice.service.UserService;
+ import com.visa.shopnow.userservice.dto.UserApiResponse;
+ import com.visa.shopnow.userservice.dto.UserRequest;
+ import com.visa.shopnow.userservice.dto.UserResponse;
+ import com.visa.shopnow.userservice.service.UserService;
  import org.springframework.http.HttpStatus;
  import org.springframework.http.ResponseEntity;
  import org.springframework.web.bind.annotation.GetMapping;

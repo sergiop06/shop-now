@@ -1,4 +1,4 @@
-package com.visa.shopnow.orderservice.config;
+package com.visa.shopnow.userservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

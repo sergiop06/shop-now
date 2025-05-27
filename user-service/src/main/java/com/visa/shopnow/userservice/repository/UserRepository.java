@@ -1,6 +1,6 @@
-package com.visa.shopnow.orderservice.repository;
+package com.visa.shopnow.userservice.repository;
 
-import com.visa.shopnow.orderservice.model.User;
+import com.visa.shopnow.userservice.model.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

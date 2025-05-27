@@ -1,4 +1,4 @@
-package com.visa.shopnow.orderservice.exception;
+package com.visa.shopnow.userservice.exception;
 
 public class DuplicateUserException extends RuntimeException {
     public DuplicateUserException(String message) {

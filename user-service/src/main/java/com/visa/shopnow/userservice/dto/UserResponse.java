@@ -1,4 +1,4 @@
-package com.visa.shopnow.orderservice.dto;
+package com.visa.shopnow.userservice.dto;
 
 import java.time.LocalDateTime;
 import java.util.Set;

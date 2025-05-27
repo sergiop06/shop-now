@@ -1,12 +1,12 @@
-package com.visa.shopnow.orderservice.service;
+package com.visa.shopnow.userservice.service;
 
-import com.visa.shopnow.orderservice.dto.PasswordUpdateRequest;
-import com.visa.shopnow.orderservice.dto.UserRequest;
-import com.visa.shopnow.orderservice.dto.UserResponse;
-import com.visa.shopnow.orderservice.exception.DuplicateUserException;
-import com.visa.shopnow.orderservice.exception.UserNotFoundException;
-import com.visa.shopnow.orderservice.model.User;
-import com.visa.shopnow.orderservice.repository.UserRepository;
+import com.visa.shopnow.userservice.dto.PasswordUpdateRequest;
+import com.visa.shopnow.userservice.dto.UserRequest;
+import com.visa.shopnow.userservice.dto.UserResponse;
+import com.visa.shopnow.userservice.exception.DuplicateUserException;
+import com.visa.shopnow.userservice.exception.UserNotFoundException;
+import com.visa.shopnow.userservice.model.User;
+import com.visa.shopnow.userservice.repository.UserRepository;
 import jakarta.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
