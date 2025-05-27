@@ -1,23 +1,67 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# This .gitignore file is designed for Spring Boot applications using Maven or Gradle,
+# and commonly used IDEs like IntelliJ IDEA, VS Code, and Eclipse/STS.
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# -----------------------------------------------------------------------------
+# Global Ignores (OS-specific, common temporary files)
+# -----------------------------------------------------------------------------
+.DS_Store             # macOS system files
+Thumbs.db             # Windows thumbnail cache
+*.log                 # Log files
+*.tmp                 # Temporary files
+*.temp
+.history/             # VS Code local history (if enabled)
+.idea/compiler/       # IntelliJ IDEA compiler caches
+.classpath_vs         # From some VS Code Java extensions
+
+
+# -----------------------------------------------------------------------------
+# Build Artifacts
+# -----------------------------------------------------------------------------
+# Maven build output
+/target/
+# Gradle build output
+/build/
+.gradle/
+# Compiled class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# For spring-boot-loader when working with exploded jars
+!/**/target/*/spring-boot-loader/
+
+# Re-include Maven wrapper files (commonly desired)
+!.mvn/wrapper/maven-wrapper.jar
+
+# Gradle wrapper files
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# -----------------------------------------------------------------------------
+# IDE-specific files and directories
+# -----------------------------------------------------------------------------
 
 ### IntelliJ IDEA ###
-.idea
+.idea/                # IntelliJ IDEA project files
 *.iws
 *.iml
 *.ipr
+out/
+
+### Eclipse / Spring Tool Suite (STS) ###
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
 
 ### NetBeans ###
 /nbproject/private/
@@ -25,9 +69,36 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
+# If you want to commit shared VS Code settings, use:
+# !.vscode/settings.json
+# !.vscode/extensions.json
+# !.vscode/launch.json
+# !.vscode/tasks.json
+
+# -----------------------------------------------------------------------------
+# Dependency Caches / Local Repositories
+# -----------------------------------------------------------------------------
+# Local .m2 repository (should not be committed)
+# ~/.m2/
+
+# -----------------------------------------------------------------------------
+# Configuration / Environment (sensitive or local-only)
+# -----------------------------------------------------------------------------
+# Application-specific log directories (if not under target/)
+/logs/
+/temp/
+# Database files (if using embedded databases like H2 outside target/)
+*.mv.db
+*.trace.db
+
+# Sensitive properties/configuration (e.g., credentials)
+# This assumes you have application.properties/yml in src/main/resources
+# but if you use external or environment-specific files that are not version controlled,
+# add them here. For example:
+# application-dev.properties
+# application-prod.properties
+# *.env
+# .env.local
