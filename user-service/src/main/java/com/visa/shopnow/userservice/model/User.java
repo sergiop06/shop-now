@@ -39,7 +39,7 @@ import org.springframework.security.core.userdetails.UserDetails;
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")
 })
-@Data // Lombok: getters , setters and more
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder // Lombok:builder pattern for object creation
@@ -118,7 +118,7 @@ public class User implements UserDetails {
      */
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // For simplicity, assume credentials do not expire
+        return true;
     }
 
     /**
@@ -127,7 +127,7 @@ public class User implements UserDetails {
      */
     @Override
     public boolean isEnabled() {
-        return true; // For simplicity, assume users are enabled by default
+        return true;
     }
 
     // --- JPA Lifecycle Callbacks ---

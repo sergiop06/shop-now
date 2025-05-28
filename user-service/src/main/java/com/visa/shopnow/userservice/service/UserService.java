@@ -13,7 +13,7 @@ public interface UserService {
     UserResponse getUserByEmail(String email);
     UserResponse getUserByUsername(String username);
     List<UserResponse> getAllUsers();
-    UserResponse updateUser(Long id, UserRequest request); // Changed to UserRequest
+    UserResponse updateUser(Long id, UserRequest request);
     void deleteUser(Long id);
     void updatePassword(Long userId, PasswordUpdateRequest request); //separated because of security reasons
     AuthTokenResponseDTO loginUser(LoginRequestDTO request);
