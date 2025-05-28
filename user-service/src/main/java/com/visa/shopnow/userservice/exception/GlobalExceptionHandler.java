@@ -8,41 +8,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND) // HTTP status to 404
-    public ResponseEntity<UserApiResponse<Void>> handleUserNotFoundException(UserNotFoundException ex) {
+    @ExceptionHandler(UserServiceException.class)
+    public ResponseEntity<UserApiResponse<Void>> handleServiceException(UserServiceException ex) {
+        HttpStatus status = ex.getErrorCode().getHttpStatus();
         UserApiResponse<Void> response = new UserApiResponse<>(false, null, ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, status);
     }
-
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT) // 409
-    public ResponseEntity<UserApiResponse<Void>> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
-        UserApiResponse<Void> response = new UserApiResponse<>(false, null, ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler(PasswordMismatchException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST) // HTTP status code to 400
-    public ResponseEntity<UserApiResponse<Void>> handlePasswordMismatchException(PasswordMismatchException ex) {
-        UserApiResponse<Void> response = new UserApiResponse<>(false, null, ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST) // HTTP status code to 400
     public ResponseEntity<UserApiResponse<Map<String, String>>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error ->
                 errors.put(error.getField(), error.getDefaultMessage()));
 
-        UserApiResponse<Map<String, String>> response = new UserApiResponse<>(false, errors, "Validation failed");
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        UserApiResponse<Map<String, String>> response = new UserApiResponse<>(false, errors, ErrorCode.VALIDATION_FAILED.getMessage());
+        return new ResponseEntity<>(response, ErrorCode.VALIDATION_FAILED.getHttpStatus());
+    }
+
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<UserApiResponse<Void>> handleAllOtherExceptions(Exception ex) {
+        UserApiResponse<Void> response = new UserApiResponse<>(false, null, ErrorCode.UNEXPECTED_ERROR.getMessage());
+        return new ResponseEntity<>(response, ErrorCode.UNEXPECTED_ERROR.getHttpStatus());
     }
 }

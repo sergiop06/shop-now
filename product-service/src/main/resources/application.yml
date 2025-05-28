@@ -1,3 +1,18 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: product-service
+  jpa:
+    hibernate:
+      ddl-auto: update # 'update' is good for development, 'validate' or 'none' for production
+    show-sql: true # Log SQL queries to console
+    properties:
+      hibernate:
+        format_sql: true # Format SQL queries for readability
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product_db
+    username: your_username
+    password: your_password
+    driver-class-name: org.postgresql.Driver
