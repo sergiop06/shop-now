@@ -1,8 +1,10 @@
-package com.visa.shopnow.orderservice.service;
+package com.visa.shopnow.userservice.service;
 
-import com.visa.shopnow.orderservice.dto.PasswordUpdateRequest;
-import com.visa.shopnow.orderservice.dto.UserRequest;
-import com.visa.shopnow.orderservice.dto.UserResponse;
+import com.visa.shopnow.userservice.dto.AuthTokenResponseDTO;
+import com.visa.shopnow.userservice.dto.LoginRequestDTO;
+import com.visa.shopnow.userservice.dto.PasswordUpdateRequest;
+import com.visa.shopnow.userservice.dto.UserRequest;
+import com.visa.shopnow.userservice.dto.UserResponse;
 import java.util.List;
 
 public interface UserService {
@@ -14,5 +16,6 @@ public interface UserService {
     UserResponse updateUser(Long id, UserRequest request); // Changed to UserRequest
     void deleteUser(Long id);
     void updatePassword(Long userId, PasswordUpdateRequest request); //separated because of security reasons
+    AuthTokenResponseDTO loginUser(LoginRequestDTO request);
 }
 

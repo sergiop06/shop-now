@@ -1,6 +1,5 @@
-package com.visa.shopnow.orderservice.dto;
+package com.visa.shopnow.userservice.dto;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,12 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserResponse { // Renamed from UserResponseDTO
-    private Long id;
+public class AuthTokenResponseDTO {
+    private String token;
     private String username;
-    private String name;
     private String email;
     private Set<String> roles;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

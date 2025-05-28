@@ -1,4 +1,4 @@
-package com.visa.shopnow.orderservice.dto;
+package com.visa.shopnow.userservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

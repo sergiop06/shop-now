@@ -1,27 +1,29 @@
-package com.visa.shopnow.orderservice.service;
+package com.visa.shopnow.userservice.service;
 
-import com.visa.shopnow.orderservice.dto.PasswordUpdateRequest;
-import com.visa.shopnow.orderservice.dto.UserRequest;
-import com.visa.shopnow.orderservice.dto.UserResponse;
-import com.visa.shopnow.orderservice.exception.DuplicateUserException;
-import com.visa.shopnow.orderservice.exception.UserNotFoundException;
-import com.visa.shopnow.orderservice.model.User;
-import com.visa.shopnow.orderservice.repository.UserRepository;
-import jakarta.validation.ValidationException;
+import com.visa.shopnow.userservice.dto.AuthTokenResponseDTO;
+import com.visa.shopnow.userservice.dto.LoginRequestDTO;
+import com.visa.shopnow.userservice.dto.PasswordUpdateRequest;
+import com.visa.shopnow.userservice.dto.UserRequest;
+import com.visa.shopnow.userservice.dto.UserResponse;
+import com.visa.shopnow.userservice.exception.ErrorCode;
+import com.visa.shopnow.userservice.exception.UserServiceException;
+import com.visa.shopnow.userservice.model.User;
+import com.visa.shopnow.userservice.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder; // use for password hashing
+    private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -32,56 +34,51 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponse registerUser(UserRequest userRequest) {
         if (userRepository.existsByUsername(userRequest.getUsername())) {
-            throw new DuplicateUserException("Username '" + userRequest.getUsername() + "' already exists.");
+            throw new UserServiceException(ErrorCode.USER_ALREADY_EXISTS, "Username '" + userRequest.getUsername() + "' already exists.");
         }
         if (userRepository.existsByEmail(userRequest.getEmail())) {
-            throw new DuplicateUserException("Email '" + userRequest.getEmail() + "' already exists.");
+            throw new UserServiceException(ErrorCode.USER_ALREADY_EXISTS, "User with email '" + userRequest.getEmail() + "' already exists.");
         }
 
-        // Build the User entity from the DTO
         User user = User.builder()
                 .username(userRequest.getUsername())
                 .name(userRequest.getName())
                 .email(userRequest.getEmail())
-                .password(passwordEncoder.encode(userRequest.getPassword())) // Hash the password
-                .createdAt(LocalDateTime.now()) // Set creation timestamp explicitly before save
+                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .createdAt(LocalDateTime.now())
                 .build();
 
-        // Assign default role (e.g., ROLE_CUSTOMER)
         Set<String> roles = new HashSet<>();
         roles.add("ROLE_CUSTOMER"); // Default role for new users
         user.setRoles(roles);
 
-        User savedUser = userRepository.save(user); // Save the user to the database
-        return mapUserToUserResponse(savedUser); // Map to DTO for response
+        User savedUser = userRepository.save(user);
+        return mapUserToUserResponse(savedUser);
     }
 
     @Override
     @Transactional
     public UserResponse updateUser(Long id, UserRequest request) {
         User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + id));
+                .orElseThrow(() -> new UserServiceException(ErrorCode.USER_NOT_FOUND, "User not found with ID: " + id));
 
         if (request.getUsername() != null && !request.getUsername().isBlank() && !existingUser.getUsername().equals(request.getUsername())) {
             if (userRepository.existsByUsername(request.getUsername())) {
-                throw new DuplicateUserException("Username '" + request.getUsername() + "' already exists.");
+                throw new UserServiceException(ErrorCode.USER_ALREADY_EXISTS, "Username '" + request.getUsername() + "' already exists.");
             }
             existingUser.setUsername(request.getUsername());
         }
 
-        // Update name if provided and different
         if (request.getName() != null && !request.getName().isBlank() && !existingUser.getName().equals(request.getName())) {
             existingUser.setName(request.getName());
         }
 
-        // Update email if provided and different
         if (request.getEmail() != null && !request.getEmail().isBlank() && !existingUser.getEmail().equals(request.getEmail())) {
             if (userRepository.existsByEmail(request.getEmail())) {
-                throw new DuplicateUserException("Email '" + request.getEmail() + "' already exists.");
+                throw new UserServiceException(ErrorCode.USER_ALREADY_EXISTS, "Email '" + request.getEmail() + "' already exists.");
             }
             existingUser.setEmail(request.getEmail());
         }
-
 
         existingUser.setUpdatedAt(LocalDateTime.now());
 
@@ -93,7 +90,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserResponse getUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + id));
+                .orElseThrow(() -> new UserServiceException(ErrorCode.USER_NOT_FOUND, "User not found with ID: " + id));
         return mapUserToUserResponse(user);
     }
 
@@ -101,14 +98,14 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserResponse getUserByEmail(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+                .orElseThrow(() -> new UserServiceException(ErrorCode.USER_NOT_FOUND, "User not found with email: " + email));
         return mapUserToUserResponse(user);
     }
 
     @Transactional(readOnly = true)
     public UserResponse getUserByUsername(String username) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + username));
+                .orElseThrow(() -> new UserServiceException(ErrorCode.USER_NOT_FOUND, "User not found with username: " + username));
         return mapUserToUserResponse(user);
     }
 
@@ -123,24 +120,23 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException("User not found with ID: " + id);
+            throw new UserServiceException(ErrorCode.USER_NOT_FOUND, "User not found with ID: " + id);
         }
         userRepository.deleteById(id);
     }
-
 
     @Override
     @Transactional
     public void updatePassword(Long userId, PasswordUpdateRequest request) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+                .orElseThrow(() -> new UserServiceException(ErrorCode.USER_NOT_FOUND, "User not found with ID: " + userId));
 
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
-            throw new ValidationException("Incorrect current password.");
+            throw new UserServiceException(ErrorCode.PASSWORD_MISMATCH, "Incorrect current password.");
         }
 
         if (!request.getNewPassword().equals(request.getConfirmNewPassword())) {
-            throw new ValidationException("New password and confirm new password do not match.");
+            throw new UserServiceException(ErrorCode.PASSWORD_MISMATCH, "New password and confirm new password do not match.");
         }
 
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
@@ -149,6 +145,28 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public AuthTokenResponseDTO loginUser(LoginRequestDTO request) {
+        // 1. Find user by username or email
+        User user = userRepository.findByUsername(request.getUsernameOrEmail())
+                .orElseGet(() -> userRepository.findByEmail(request.getUsernameOrEmail())
+                        .orElseThrow(() -> new UserServiceException(ErrorCode.AUTHENTICATION_FAILED, "Invalid username or password.")));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new UserServiceException(ErrorCode.AUTHENTICATION_FAILED, "Invalid username or password.");
+        }
+
+        // 3. If authentication successful, generate and return a token
+        String mockToken = "mock-jwt-token-for-" + user.getUsername() + "-" + System.currentTimeMillis();
+
+        return AuthTokenResponseDTO.builder()
+                .token(mockToken)
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .roles(user.getRoles())
+                .build();
+    }
 
     private UserResponse mapUserToUserResponse(User user) {
         return UserResponse.builder()
