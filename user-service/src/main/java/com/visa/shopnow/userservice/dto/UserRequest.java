@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserRequest { // Renamed from UserRegistrationRequestDTO
+public class UserRequest {
 
     @NotBlank(message = "Username cannot be empty", groups = OnCreate.class)
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
