@@ -18,7 +18,7 @@ spring:
         - id: products-service
           uri: http://product-service:8081
           predicates:
-            - Path=/api/v1/products/**
+            - Path=/api/v1/products/**, /api/v1/categories/**
 app:
   jwt:
-    secret: secureSecreteKeyShopNowProjectVisa2025! # MUST MATCH THE SECRET IN JwtUtil AND user-service
+    secret: secureSecreteKeyShopNowProjectVisa2025! # same one as user-service, to validate token

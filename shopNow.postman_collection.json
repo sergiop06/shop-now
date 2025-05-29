@@ -805,6 +805,540 @@
 		{
 			"name": "orders",
 			"item": []
+		},
+		{
+			"name": "Gateway",
+			"item": [
+				{
+					"name": "products gateway",
+					"item": [
+						{
+							"name": "create category (POST /api/v1/categories)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInVzZXJJZCI6MSwicm9sZXMiOlsiUk9MRV9ST0xFX0NVU1RPTUVSIl0sImlhdCI6MTc0ODU0ODg0MCwiZXhwIjoxNzQ4NjM1MjQwfQ.lBC2qSdO-JMWgTVHqvWL08Y0S6G6eMfEOfbZoy2vZ-U",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Electronics\",\n    \"description\": \"Gadgets, devices, and electronic accessories.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:80/api/v1/categories",
+									"host": [
+										"localhost"
+									],
+									"port": "80",
+									"path": [
+										"api",
+										"v1",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All product endpoints",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Electronics\",\n    \"description\": \"Gadgets, devices, and electronic accessories.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8081/actuator/mappings",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"actuator",
+										"mappings"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "register user ( POST   /api/v1/user)  Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser\",\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"password\": \"StrongPassword123\",\n    \"phone\": \"123-456-7890\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:80/api/v1/users",
+							"host": [
+								"localhost"
+							],
+							"port": "80",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "register user ( POST   /api/v1/user)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"testuser\",\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"password\": \"StrongPassword123\",\n    \"phone\": \"123-456-7890\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 27 May 2025 17:12:41 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 1,\n        \"username\": \"testuser\",\n        \"name\": \"Test User\",\n        \"email\": \"test@example.com\",\n        \"roles\": [\n            \"ROLE_CUSTOMER\"\n        ],\n        \"createdAt\": \"2025-05-27T12:12:41.558827\",\n        \"updatedAt\": null\n    },\n    \"message\": \"User created successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Users (GET  /api/v1/users)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInVzZXJJZCI6MSwicm9sZXMiOlsiUk9MRV9ST0xFX0NVU1RPTUVSIl0sImlhdCI6MTc0ODU0ODg0MCwiZXhwIjoxNzQ4NjM1MjQwfQ.lBC2qSdO-JMWgTVHqvWL08Y0S6G6eMfEOfbZoy2vZ-U",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "localhost:80/api/v1/users",
+							"host": [
+								"localhost"
+							],
+							"port": "80",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get All Users (GET  /api/v1/users)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/v1/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 27 May 2025 17:13:54 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"username\": \"testuser\",\n            \"name\": \"Test User\",\n            \"email\": \"test@example.com\",\n            \"roles\": [\n                \"ROLE_CUSTOMER\"\n            ],\n            \"createdAt\": \"2025-05-27T12:12:41.558827\",\n            \"updatedAt\": null\n        }\n    ],\n    \"message\": null\n}"
+						}
+					]
+				},
+				{
+					"name": "login (POST api/v1/users/login)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"usernameOrEmail\": \"testuser\",\n    \"password\": \"StrongPassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:80/api/v1/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "80",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "login (POST api/v1/users/login)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"usernameOrEmail\": \"testuser\",\n    \"password\": \"StrongPassword123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/users/login",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 03:30:05 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"token\": \"mock-jwt-token-for-testuser-1748489404982\",\n        \"username\": \"testuser\",\n        \"email\": \"test@example.com\",\n        \"roles\": [\n            \"ROLE_CUSTOMER\"\n        ]\n    },\n    \"message\": \"User logged in successfully.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete user ( DELETE   /api/v1/user/{id})",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInVzZXJJZCI6MSwicm9sZXMiOlsiUk9MRV9ST0xFX0NVU1RPTUVSIl0sImlhdCI6MTc0ODU0ODg0MCwiZXhwIjoxNzQ4NjM1MjQwfQ.lBC2qSdO-JMWgTVHqvWL08Y0S6G6eMfEOfbZoy2vZ-U",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:80/api/v1/users/1",
+							"host": [
+								"localhost"
+							],
+							"port": "80",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete  user ( DELETE  /api/v1/user/{id} )",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/users/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 27 May 2025 18:04:37 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": null,\n    \"message\": \"User deleted successfully.\"\n}"
+						}
+					]
+				}
+			]
 		}
 	]
 }
