@@ -59,6 +59,17 @@ services:
     depends_on:
       - product-db # product-service starts after product-db
 
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: shopnow-api-gateway
+    ports:
+      - "80:80" # Map host port 80 to container port 80 -> defined in dockerfile for api gateway
+    depends_on:
+      - product-service
+      - user-service
+
 volumes:
   user_db_data:
   product_db_data:

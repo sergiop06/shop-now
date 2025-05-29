@@ -1,6 +1,10 @@
 server:
   port: 8080
 
+logging:
+  level:
+    org.springframework.security: DEBUG
+
 spring:
   application:
     name: user-service
@@ -25,5 +29,5 @@ management:
         # but for production, it's safer to list only what's needed (e.g., 'health,info,mappings')
         include: "mappings"
 jwt:
-  secret: secureSecreteKeyShopNowVisa2025!
+  secret: secureSecreteKeyShopNowProjectVisa2025!
   expiration: 86400000 # 24 hours in milliseconds (24 * 60 * 60 * 1000)

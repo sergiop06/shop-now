@@ -1,8 +1,10 @@
 package com.visa.shopnow.apigateway.config;
 
 import javax.crypto.spec.SecretKeySpec;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -13,12 +15,15 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
+    @Value("${app.jwt.secret}")
+    private String jwtSecret;
+
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/api/v1/users/register", "/api/v1/users/login").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/v1/users", "/api/v1/users/login").permitAll()
                         // Protected endpoints - require authentication with token
                         .pathMatchers("/api/v1/products/**").authenticated()
                         // More granular authorization:
@@ -33,10 +38,9 @@ public class SecurityConfig {
 
     @Bean
     public org.springframework.security.oauth2.jwt.ReactiveJwtDecoder jwtDecoder() {
-        String secretKey = "your-jwt-secret-that-is-at-least-256bit-long"; // same as user service
 
         // For symmetric keys (HMACSHA256), use MacAlgorithm
-        SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(), MacAlgorithm.HS256.getName());
+        SecretKeySpec secretKeySpec = new SecretKeySpec(jwtSecret.getBytes(), MacAlgorithm.HS256.getName());
 
         return NimbusReactiveJwtDecoder.withSecretKey(secretKeySpec)
                 .macAlgorithm(MacAlgorithm.HS256)
