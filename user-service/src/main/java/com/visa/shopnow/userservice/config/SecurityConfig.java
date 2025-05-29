@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // Permit all access to specific endpoints:
                         .requestMatchers("/api/v1/users/register").permitAll()
-                        .requestMatchers("/api/v1/users/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll()
                         .requestMatchers("/api/v1/users/{id}").permitAll()
                         .requestMatchers("/api/v1/users").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/users/{id}/password").permitAll()

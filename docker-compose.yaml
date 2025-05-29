@@ -1,0 +1,64 @@
+# hostnames are tide to the service names
+services:
+  # --- PostgreSQL Database for User Service ---
+  user-db:
+    image: postgres:15-alpine
+    container_name: shopnow-user-db
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    ports:
+      # host_port:container_port
+      - "5430:5432" # 5430 is the port exposed on the container; 5432 is the postgres port.
+    volumes:
+      - user_db_data:/var/lib/postgresql/data
+
+  # --- User Service Application ---
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    container_name: shopnow-user-service
+    ports:
+      - "8080:8080" # Map host port 8080 to container port 8080
+    environment:
+      # notice that after postgresql://it uses the service name so user-db instead of user_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/user_db # Connects to user-db service
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - user-db # user-service starts after user-db
+
+  # --- PostgreSQL Database for Product Service ---
+  product-db:
+    image: postgres:15-alpine
+    container_name: shopnow-product-db
+    environment:
+      POSTGRES_DB: product_db
+      POSTGRES_USER: admin_product
+      POSTGRES_PASSWORD: password
+    ports:
+      #host_port:container_port
+      - "5431:5432" # Map to a different host port (5431) to avoid conflict with user-db
+    volumes:
+      - product_db_data:/var/lib/postgresql/data
+
+  # --- Product Service Application ---
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    container_name: shopnow-product-service
+    ports:
+      - "8081:8081" # Map host port 8081 to container port 8081
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://product-db:5432/product_db
+      SPRING_DATASOURCE_USERNAME: admin_product
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - product-db # product-service starts after product-db
+
+volumes:
+  user_db_data:
+  product_db_data:

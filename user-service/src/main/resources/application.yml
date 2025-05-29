@@ -1,3 +1,26 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: user-service
+  jpa:
+    hibernate:
+      ddl-auto: update # 'update' is good for development, 'validate' or 'none' for production
+    show-sql: true # Log SQL queries to console
+    properties:
+      hibernate:
+        format_sql: true # Format SQL queries for readability
+  datasource:
+    url: jdbc:postgresql://localhost:5430/user_db
+    username: admin
+    password: password
+    driver-class-name: org.postgresql.Driver
+management:
+  endpoints:
+    web:
+      exposure:
+        # Include the 'mappings' endpoint to see all HTTP endpoint mappings
+        # You can also use 'include: "*"' to expose all actuator endpoints,
+        # but for production, it's safer to list only what's needed (e.g., 'health,info,mappings')
+        include: "mappings"
