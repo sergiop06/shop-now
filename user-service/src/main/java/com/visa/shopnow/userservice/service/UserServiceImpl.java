@@ -9,21 +9,31 @@ import com.visa.shopnow.userservice.exception.ErrorCode;
 import com.visa.shopnow.userservice.exception.UserServiceException;
 import com.visa.shopnow.userservice.model.User;
 import com.visa.shopnow.userservice.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.crypto.SecretKey;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
+    @Value("${jwt.expiration}")
+    private long jwtExpiration;
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -156,14 +166,30 @@ public class UserServiceImpl implements UserService {
             throw new UserServiceException(ErrorCode.AUTHENTICATION_FAILED, "Invalid username or password.");
         }
 
-        String mockToken = "mock-jwt-token-for-" + user.getUsername() + "-" + System.currentTimeMillis();
+        String token = generateToken(user);
 
         return AuthTokenResponseDTO.builder()
-                .token(mockToken)
+                .token(token)
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .roles(user.getRoles())
+                // Assuming roles are Enum and need "ROLE_"
+                .roles(user.getRoles().stream().map(role -> "ROLE_" + role).collect(Collectors.toSet()))
                 .build();
+    }
+
+    private String generateToken(User user) {
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes()); // Get key from secret string
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtExpiration);
+
+        return Jwts.builder()
+                .setSubject(user.getUsername()) // Use username as a subject
+                .claim("userId", user.getId()) // Add user ID as a claim
+                .claim("roles", user.getRoles().stream().map(role -> "ROLE_" + role).collect(Collectors.toList())) // Add roles as a claim
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(key, SignatureAlgorithm.HS256) // Sign with the secret key and HS256 algorithm
+                .compact();
     }
 
     private UserResponse mapUserToUserResponse(User user) {
