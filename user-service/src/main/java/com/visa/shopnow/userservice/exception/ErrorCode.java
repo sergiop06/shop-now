@@ -1,7 +1,9 @@
 package com.visa.shopnow.userservice.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public enum ErrorCode {
     // User-related errors
     USER_NOT_FOUND("USER_001", "User not found.", HttpStatus.NOT_FOUND),
@@ -9,7 +11,7 @@ public enum ErrorCode {
 
     // Authentication/Password-related errors
     PASSWORD_MISMATCH("AUTH_001", "Current password is incorrect or new passwords do not match.", HttpStatus.BAD_REQUEST),
-    AUTHENTICATION_FAILED("AUTH_002", "Invalid username or password.", HttpStatus.UNAUTHORIZED), // If you implement login logic
+    AUTHENTICATION_FAILED("AUTH_002", "Invalid username or password.", HttpStatus.UNAUTHORIZED),
 
     // Generic/Fallback errors
     VALIDATION_FAILED("GEN_001", "Validation failed.", HttpStatus.BAD_REQUEST),

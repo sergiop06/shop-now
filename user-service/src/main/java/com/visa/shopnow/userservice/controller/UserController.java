@@ -1,5 +1,7 @@
  package com.visa.shopnow.userservice.controller;
 
+ import com.visa.shopnow.userservice.dto.AuthTokenResponseDTO;
+ import com.visa.shopnow.userservice.dto.LoginRequestDTO;
  import com.visa.shopnow.userservice.dto.PasswordUpdateRequest;
  import com.visa.shopnow.userservice.dto.UserApiResponse;
  import com.visa.shopnow.userservice.dto.UserRequest;
@@ -79,6 +81,14 @@ public class UserController {
      public ResponseEntity<UserApiResponse<Void>> deleteUser(@PathVariable Long id) {
          userService.deleteUser(id);
          return ResponseEntity.ok(UserApiResponse.success(null, "User deleted successfully."));
+     }
+
+     // POST /api/v1/users/login
+     @PostMapping("/login")
+     public ResponseEntity<UserApiResponse<AuthTokenResponseDTO>> loginUser(
+             @Valid @RequestBody LoginRequestDTO request) {
+         AuthTokenResponseDTO tokenResponse = userService.loginUser(request);
+         return ResponseEntity.ok(UserApiResponse.success(tokenResponse, "User logged in successfully."));
      }
 
  }

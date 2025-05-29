@@ -148,7 +148,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public AuthTokenResponseDTO loginUser(LoginRequestDTO request) {
-        // 1. Find user by username or email
         User user = userRepository.findByUsername(request.getUsernameOrEmail())
                 .orElseGet(() -> userRepository.findByEmail(request.getUsernameOrEmail())
                         .orElseThrow(() -> new UserServiceException(ErrorCode.AUTHENTICATION_FAILED, "Invalid username or password.")));
@@ -157,7 +156,6 @@ public class UserServiceImpl implements UserService {
             throw new UserServiceException(ErrorCode.AUTHENTICATION_FAILED, "Invalid username or password.");
         }
 
-        // 3. If authentication successful, generate and return a token
         String mockToken = "mock-jwt-token-for-" + user.getUsername() + "-" + System.currentTimeMillis();
 
         return AuthTokenResponseDTO.builder()

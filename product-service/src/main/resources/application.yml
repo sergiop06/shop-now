@@ -13,6 +13,14 @@ spring:
         format_sql: true # Format SQL queries for readability
   datasource:
     url: jdbc:postgresql://localhost:5432/product_db
-    username: your_username
-    password: your_password
+    username: admin_product
+    password: password
     driver-class-name: org.postgresql.Driver
+management:
+  endpoints:
+    web:
+      exposure:
+        # Include the 'mappings' endpoint to see all HTTP endpoint mappings
+        # You can also use 'include: "*"' to expose all actuator endpoints,
+        # but for production, it's safer to list only what's needed (e.g., 'health,info,mappings')
+        include: "mappings"

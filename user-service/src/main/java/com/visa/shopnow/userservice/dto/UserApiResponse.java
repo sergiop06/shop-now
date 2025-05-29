@@ -16,7 +16,6 @@ public class UserApiResponse<T> {
     private T data;
     private String message;
 
-    // You can also add convenience static methods for common responses
     public static <T> UserApiResponse<T> success(T data) {
         return UserApiResponse.<T>builder()
                 .success(true)
